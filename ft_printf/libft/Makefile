@@ -6,11 +6,13 @@
 #    By: afillion <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2015/11/30 15:37:28 by afillion          #+#    #+#              #
-#    Updated: 2016/03/11 16:27:12 by qdegraev         ###   ########.fr        #
+#    Updated: 2016/03/15 11:09:42 by qdegraev         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = libft.a
+
+INCLUDES = includes/
 
 CC = gcc
 
@@ -92,7 +94,7 @@ $(NAME): $(OBJ)
 	ranlib $(NAME)
 
 %.o: %.c
-	$(CC) $(CFLAGS) -o $@ -c $<
+	$(CC) $(CFLAGS) -o $@ -c $< -I $(INCLUDES)
 
 clean:
 	rm -f $(OBJ)

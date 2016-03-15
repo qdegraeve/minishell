@@ -6,7 +6,7 @@
 #    By: qdegraev <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2015/12/07 08:41:32 by qdegraev          #+#    #+#              #
-#    Updated: 2016/03/11 16:26:56 by qdegraev         ###   ########.fr        #
+#    Updated: 2016/03/15 10:46:56 by qdegraev         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,6 +14,8 @@ NAME = libftprintf.a
 
 LIBPATH = libft
 LIB = $(LIBPATH)/libft.a
+
+INCLUDES = includes/
 
 CC = gcc
 
@@ -48,7 +50,7 @@ $(NAME): $(OBJ)
 	libtool -static -o $@ $(LIB) temp.a
 
 %.o: %.c
-	$(CC) $(CFLAGS) -o $@ -c $<
+	$(CC) $(CFLAGS) -o $@ -c $< -I $(INCLUDES)
 
 $(LIB):
 	make -C $(LIBPATH)

@@ -1,36 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strnstr.c                                       :+:      :+:    :+:   */
+/*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: qdegraev <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/03/15 19:48:14 by qdegraev          #+#    #+#             */
-/*   Updated: 2016/03/15 19:49:29 by qdegraev         ###   ########.fr       */
+/*   Created: 2016/03/15 10:34:40 by qdegraev          #+#    #+#             */
+/*   Updated: 2016/03/15 12:23:18 by qdegraev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#ifndef MINISHELL_H
+# define MINISHELL_H
 
-char	*ft_strnstr(const char *s1, const char *s2, size_t n)
-{
-	size_t	i;
-	size_t	k;
+#include "ft_printf/includes/ft_printf.h"
 
-	i = 0;
-	k = 0;
-	if (s2[i] == '\0')
-		return (char*)(s1);
-	while (i < n && s1[i])
-	{
-		k = 0;
-		while (s1[i + k] == s2[k] && i + k < n)
-		{
-			k++;
-			if (s2[k] == '\0')
-				return (char*)(&s1[i]);
-		}
-		i++;
-	}
-	return (NULL);
-}
+#include <unistd.h>
+
+#define DEBUG ft_printf("\n--- file: %s; fonction: %s, line: [%d]\n", __FILE__, __FUNCTION__, __LINE__);
+
+#endif

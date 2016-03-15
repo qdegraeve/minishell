@@ -6,14 +6,15 @@
 /*   By: qdegraev <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/08 10:56:16 by qdegraev          #+#    #+#             */
-/*   Updated: 2016/02/19 19:01:59 by qdegraev         ###   ########.fr       */
+/*   Updated: 2016/03/15 12:46:01 by qdegraev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef FT_PRINTF_H
 # define FT_PRINTF_H
 
-# include "libft/includes/libft.h"
+# include "../libft/includes/libft.h"
+# include "../libft/includes/get_next_line.h"
 # include <stdarg.h>
 # include <stdlib.h>
 # include <unistd.h>
