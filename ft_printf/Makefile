@@ -6,7 +6,7 @@
 #    By: qdegraev <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2015/12/07 08:41:32 by qdegraev          #+#    #+#              #
-#    Updated: 2016/03/15 10:46:56 by qdegraev         ###   ########.fr        #
+#    Updated: 2016/03/16 10:45:22 by qdegraev         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,7 +15,9 @@ NAME = libftprintf.a
 LIBPATH = libft
 LIB = $(LIBPATH)/libft.a
 
-INCLUDES = includes/
+INCLUDES = include/
+
+VPATH = src
 
 CC = gcc
 

@@ -6,11 +6,12 @@
 /*   By: qdegraev <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/15 10:41:00 by qdegraev          #+#    #+#             */
-/*   Updated: 2016/03/15 20:31:45 by qdegraev         ###   ########.fr       */
+/*   Updated: 2016/03/16 16:41:23 by qdegraev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include <stdio.h>
 
 char	**ft_tab_strcpy(char **to_copy)
 {
@@ -32,34 +33,6 @@ char	**ft_tab_strcpy(char **to_copy)
 	return (copy);
 }
 
-char	*get_path(char *command, char **env)
-{
-	char	*path;
-	char	**test;
-	int		i;
-
-	i = 0;
-	while (env[i])
-	{
-		if (strstr(env[i], "PATH=") != NULL)
-			break ;
-		i++;
-	}
-	test = ft_strsplit(env[i] + 5, ':');
-	i = 0;
-	while (test[i])
-	{
-		test[i] = ft_cjoin(test[i], ft_strdup("/"));
-		path = ft_strjoin(test[i], command);
-		if (access(path, X_OK) == 0)
-			return (path);
-		else
-			ft_strdel(&path);
-		i++;
-	}
-	return (NULL);
-}
-
 char	**get_argv()
 {
 	char *line;
@@ -74,7 +47,19 @@ char	**get_argv()
 	return (caca);
 }
 
-void	loop_fork(char **env)
+void	init_builtin(t_builtin *b, char **env, char **argv)
+{
+	b->cd = "cd";
+	b->quit = "quit";
+	b->exit = "exit";
+	b->env = "env";
+	b->setenv = "setenv";
+	b->unsetenv = "unsetenv";
+	b->argv = argv;
+	b->envir = env;
+}
+
+void	loop_fork(char **env, t_builtin b)
 {
 	pid_t	parent;
 	char	**argv;
@@ -84,22 +69,34 @@ void	loop_fork(char **env)
 	while(42)
 	{
 		argv = get_argv();
-		path = get_path(argv[0], env);
+		init_builtin(&b, env, argv);
+		path = get_command(argv[0], &b);
 		parent = fork();
 		if (parent > 0)
+		{
+			if (!path)
+				exec_cd(&b);
 			wait(NULL);
+		}
 		else if (parent == -1)
 		{
-			printf("father = %d\n", parent);
+			ft_printf("father = %d\n", parent);
 			exit(EXIT_FAILURE);
 		}
 		else if (parent == 0)
-			execve(path, argv, env);
+		{
+			if (path)
+				execve(path, argv, env);
+			exit(EXIT_SUCCESS);
+		}
 	}
 }
 
 int		main(int ac, char **av, char **env)
 {
-	loop_fork(ft_tab_strcpy(env));
+	t_builtin b;
+
+	ft_bzero(&b, sizeof(b));
+	loop_fork(ft_tab_strcpy(env), b);
 	return (0);
 }
