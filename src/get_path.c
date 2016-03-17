@@ -6,7 +6,7 @@
 /*   By: qdegraev <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/15 17:39:03 by qdegraev          #+#    #+#             */
-/*   Updated: 2016/03/16 16:18:37 by qdegraev         ###   ########.fr       */
+/*   Updated: 2016/03/17 19:00:30 by qdegraev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,8 @@ void	get_env_index(t_builtin **b)
 			(*b)->home = i;
 		else if (!ft_strncmp((*b)->envir[i], "PWD=", 4))
 			(*b)->pwd = i;
+		else if (!ft_strncmp((*b)->envir[i], "OLDPWD=", 7))
+			(*b)->oldpwd = i;
 		i++;
 	}
 
