@@ -6,7 +6,7 @@
 /*   By: qdegraev <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/15 10:41:00 by qdegraev          #+#    #+#             */
-/*   Updated: 2016/03/17 18:31:22 by qdegraev         ###   ########.fr       */
+/*   Updated: 2016/03/18 18:31:57 by qdegraev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,9 @@ char	**get_argv()
 	char **caca;
 
 	line = NULL;
+	ft_putstr_fd("\033[31m", 1);
 	ft_putstr_fd("ecris sale batard : > ", 1);
+	ft_putstr_fd("\033[0m", 1);
 	get_next_line(0, &line);
 	caca = ft_strsplit(line, ' ');
 	if (line)
@@ -29,13 +31,8 @@ char	**get_argv()
 
 void	init_builtin(t_builtin *b, char **env)
 {
-	b->cd = "cd";
-	b->quit = "quit";
-	b->exit = "exit";
-	b->env = "env";
-	b->setenv = "setenv";
-	b->unsetenv = "unsetenv";
-	b->envir = env;
+	b->env = env;
+	b->error = 0;
 }
 
 void	loop_fork(char **env, t_builtin b)
@@ -44,17 +41,18 @@ void	loop_fork(char **env, t_builtin b)
 	char	**argv;
 	char	*path;
 
+
 	argv = NULL;
+	path = NULL;
 	init_builtin(&b, env);
 	while(42)
 	{
 		b.argv = get_argv();
-		path = get_command(b.argv[0], &b);
+		if (b.argv[0])
+			path = get_command(b.argv[0], &b);
 		parent = fork();
 		if (parent > 0)
 		{
-			if (!path)
-			exec_cd(&b);
 			wait(NULL);
 		}
 		else if (parent == -1)
@@ -65,7 +63,7 @@ void	loop_fork(char **env, t_builtin b)
 		else if (parent == 0)
 		{
 			if (path)
-				execve(path, b.argv, env);
+				execve(path, b.argv, b.env);
 			exit(EXIT_SUCCESS);
 		}
 	}

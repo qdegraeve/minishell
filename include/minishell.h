@@ -6,7 +6,7 @@
 /*   By: qdegraev <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/15 10:34:40 by qdegraev          #+#    #+#             */
-/*   Updated: 2016/03/17 19:26:21 by qdegraev         ###   ########.fr       */
+/*   Updated: 2016/03/18 18:28:10 by qdegraev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,19 +20,20 @@
 
 typedef struct	s_builtin
 {
-	char		*cd;
-	char		*quit;
-	char		*env;
-	char		*setenv;
-	char		*unsetenv;
-	char		*exit;
-	char		**envir;
+	char		**env;
 	char		**argv;
-	int		path;
-	int		home;
-	int		pwd;
-	int		oldpwd;
+	int			path;
+	int			home;
+	int			pwd;
+	int			oldpwd;
+	char		error;
 }				t_builtin;
+
+typedef struct	s_commands
+{
+	char		*id;
+	void		(*f)(t_builtin*);
+}				t_commands;
 
 /*
 **		get_path
@@ -58,5 +59,13 @@ char			**ft_tab_add(char **tab, char *var);
 **		exec_cd
 */
 void			exec_cd(t_builtin *b);
+
+
+/*
+**		env
+*/
+void	exec_env	(t_builtin *b);
+void	exec_setenv(t_builtin *b);
+void	exec_unsetenv(t_builtin *b);
 
 #endif

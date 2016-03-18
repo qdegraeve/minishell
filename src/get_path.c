@@ -6,7 +6,7 @@
 /*   By: qdegraev <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/15 17:39:03 by qdegraev          #+#    #+#             */
-/*   Updated: 2016/03/17 19:00:30 by qdegraev         ###   ########.fr       */
+/*   Updated: 2016/03/18 18:29:39 by qdegraev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,30 +17,49 @@ void	get_env_index(t_builtin **b)
 	int		i;
 
 	i = 0;
-	while ((*b)->envir[i])
+	while ((*b)->env[i])
 	{
-		if (!ft_strncmp((*b)->envir[i], "PATH=", 5))
+		if (!ft_strncmp((*b)->env[i], "PATH=", 5))
 			(*b)->path = i;
-		else if (!ft_strncmp((*b)->envir[i], "HOME=", 5))
+		else if (!ft_strncmp((*b)->env[i], "HOME=", 5))
 			(*b)->home = i;
-		else if (!ft_strncmp((*b)->envir[i], "PWD=", 4))
+		else if (!ft_strncmp((*b)->env[i], "PWD=", 4))
 			(*b)->pwd = i;
-		else if (!ft_strncmp((*b)->envir[i], "OLDPWD=", 7))
+		else if (!ft_strncmp((*b)->env[i], "OLDPWD=", 7))
 			(*b)->oldpwd = i;
 		i++;
 	}
 
 }
 
+void	exec_exit(t_builtin *b)
+{
+	b->error = 1;
+	exit(EXIT_SUCCESS);
+}
+
 char	*get_command(char *command, t_builtin *b)
 {
-	if (!ft_strcmp(command, b->quit) || !ft_strcmp(command, b->exit))
-		exit(EXIT_SUCCESS);
+	int			i;
+	t_commands	code_error[6] = {{"cd", &exec_cd}, \
+	{"env", &exec_env},
+	{"setenv", &exec_setenv},
+	{"unsetenv", &exec_unsetenv},
+	{"exit", &exec_exit},
+	{"quit", &exec_exit}};
+
+	i = 0;
 	get_env_index(&b);
-	if (!ft_strcmp(command, b->cd))
-		return (NULL);
-	else
-		return (get_path(command, b));
+	while (i < 6)
+	{
+		if (!ft_strcmp(command, code_error[i].id))
+		{
+			code_error[i].f(b);
+			return (NULL);
+		}
+		i++;
+	}
+	return (get_path(command, b));
 }
 
 char	*get_path(char *command, t_builtin *b)
@@ -49,7 +68,7 @@ char	*get_path(char *command, t_builtin *b)
 	char	**test;
 	int		i;
 
-	test = ft_strsplit(b->envir[b->path] + 5, ':');
+	test = ft_strsplit(b->env[b->path] + 5, ':');
 	i = 0;
 	while (test[i])
 	{

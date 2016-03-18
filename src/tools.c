@@ -1,4 +1,4 @@
-/* ************************************************************************** */
+/* ************************************************************************* */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   tools.c                                            :+:      :+:    :+:   */
@@ -6,7 +6,7 @@
 /*   By: qdegraev <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/17 15:50:26 by qdegraev          #+#    #+#             */
-/*   Updated: 2016/03/17 19:24:53 by qdegraev         ###   ########.fr       */
+/*   Updated: 2016/03/18 18:36:28 by qdegraev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,16 +58,17 @@ char	**ft_tab_remove(char **tab, int line)
 	k = 0;
 	while (tab[i])
 		i++;
-	copy = (char**)malloc(sizeof(copy) * i - 1);
-	while (j < i - 1)
+	copy = (char**)malloc(sizeof(copy) * i);
+	while (j < i)
 	{
-		if (j == line)
-			k++;
+		if (j != line)
+			copy[k++] = tab[j];
 		else
-			copy[j] = ft_strdup(tab[j + k]);
+			ft_strdel(&(tab[j]));
 		j++;
 	}
-	copy[j] = NULL;
+	free(tab);
+	copy[k] = NULL;
 	return (copy);
 }
 
@@ -81,12 +82,14 @@ char	**ft_tab_add(char **tab, char *var)
 	j = 0;
 	while (tab[i])
 		i++;
-	copy = (char**)malloc(sizeof(copy) * i + 1);
+	copy = (char**)malloc(sizeof(*copy) * (i + 2));
+	ft_bzero(copy, sizeof(copy));
 	while (j < i)
 	{
-		copy[j] = ft_strdup(tab[j]);
+		copy[j] = tab[j];
 		j++;
 	}
+	free(tab);
 	copy[j++] = var;
 	copy[j] = NULL;
 	return (copy);
