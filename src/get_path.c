@@ -6,7 +6,7 @@
 /*   By: qdegraev <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/15 17:39:03 by qdegraev          #+#    #+#             */
-/*   Updated: 2016/03/21 18:44:22 by qdegraev         ###   ########.fr       */
+/*   Updated: 2016/03/21 20:26:05 by qdegraev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,8 @@ void	get_env_index(t_builtin **b)
 	int		i;
 
 	i = 0;
-	DEBUG
 	while ((*b)->env && (*b)->env[i])
 	{
-		DEBUG
 		if (!ft_strncmp((*b)->env[i], "PATH=", 5))
 			(*b)->path_e = i;
 		else if (!ft_strncmp((*b)->env[i], "HOME=", 5))
@@ -55,13 +53,13 @@ void	get_command(char *command, t_builtin *b)
 	{
 		if (!ft_strcmp(command, code_error[i].id))
 		{
-			DEBUG
 			b->argv = ft_tab_remove(b->argv, 0);
 			code_error[i].f(b);
 			return ;
 		}
 		i++;
 	}
+	get_path(b->argv[0], b);
 }
 
 void	get_path(char *command, t_builtin *b)

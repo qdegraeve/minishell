@@ -6,7 +6,7 @@
 /*   By: qdegraev <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/15 10:41:00 by qdegraev          #+#    #+#             */
-/*   Updated: 2016/03/21 18:42:05 by qdegraev         ###   ########.fr       */
+/*   Updated: 2016/03/21 20:26:01 by qdegraev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,13 +31,10 @@ char	**get_argv()
 
 void	init_builtin(t_builtin *b)
 {
-	DEBUG
 	if (b->env_cpy)
 		clear_tab(b->env_cpy);
-	DEBUG
 	if (b->path)
 		ft_strdel(&b->path);
-	DEBUG
 	b->error = 0;
 	b->argv = get_argv();
 	b->env_i = 0;
@@ -62,10 +59,8 @@ void	loop_fork(t_builtin b)
 	while(42)
 	{
 		init_builtin(&b);
-		DEBUG
 		if (b.argv[0])
 			get_command(b.argv[0], &b);
-		DEBUG
 		parent = fork();
 		if (parent > 0)
 			wait(NULL);
@@ -77,7 +72,7 @@ void	loop_fork(t_builtin b)
 			{
 				if (!b.env_or_cpy)
 					execve(b.path, b.argv, b.env);
-				if (!b.env_or_cpy)
+				if (b.env_or_cpy)
 					execve(b.path, b.argv, b.env_cpy);
 			}
 			exit(EXIT_SUCCESS);

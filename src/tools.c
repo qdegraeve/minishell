@@ -6,7 +6,7 @@
 /*   By: qdegraev <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/17 15:50:26 by qdegraev          #+#    #+#             */
-/*   Updated: 2016/03/21 18:42:01 by qdegraev         ###   ########.fr       */
+/*   Updated: 2016/03/21 20:39:20 by qdegraev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ char	**ft_tab_strcpy(char **to_copy)
 	j = 0;
 	while (to_copy[i])
 		i++;
-	copy = (char**)malloc(sizeof(copy) * i);
+	copy = (char**)malloc(sizeof(copy) * (i + 1));
 	while (j < i)
 	{
 		copy[j] = ft_strdup(to_copy[j]);
@@ -37,12 +37,13 @@ void	clear_tab(char **tab)
 	int		i;
 
 	i = 0;
-	while (tab[i])
+	while (tab && tab[i] && tab[i][0])
 	{
 		ft_strdel(&tab[i]);
 		i++;
 	}
-	free(tab);
+//	if (tab)
+//		free(tab);
 	tab = NULL;
 }
 
@@ -56,7 +57,7 @@ char	**ft_tab_remove(char **tab, int line)
 	i = 0;
 	j = 0;
 	k = 0;
-	while (tab[i])
+	while (tab && tab[i])
 		i++;
 	copy = (char**)malloc(sizeof(copy) * i);
 	while (j < i)

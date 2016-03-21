@@ -6,14 +6,14 @@
 /*   By: qdegraev <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/15 10:34:40 by qdegraev          #+#    #+#             */
-/*   Updated: 2016/03/21 17:59:35 by qdegraev         ###   ########.fr       */
+/*   Updated: 2016/03/21 22:06:47 by qdegraev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
-#include "../ft_printf/include/ft_printf.h"
+#include "../libft/include/ft_printf.h"
 
 #include <unistd.h>
 #include <sys/stat.h>
@@ -71,7 +71,8 @@ void			exec_cd(t_builtin *b);
 /*
 **		env
 */
-void	unset_env_one(t_builtin *b, char *remove);
+void	set_env_one(t_builtin *b, char *add, char **env, int j);
+void	unset_env_one(char *remove, char ***env);
 void	env_options(t_builtin *b, char *av);
 void	exec_env	(t_builtin *b);
 void	exec_setenv(t_builtin *b);

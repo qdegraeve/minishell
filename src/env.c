@@ -6,7 +6,7 @@
 /*   By: qdegraev <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/17 17:46:23 by qdegraev          #+#    #+#             */
-/*   Updated: 2016/03/21 18:55:46 by qdegraev         ###   ########.fr       */
+/*   Updated: 2016/03/21 22:11:52 by qdegraev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,17 +48,14 @@ void	exec_env(t_builtin *b)
 	}
 	while (b->argv[i][0] == '-')
 	{
-		DEBUG
 		env_options(b, b->argv[i]);
 		b->argv = ft_tab_remove(b->argv, i);
 	}
 	if (!b->env_i)
 		b->env_cpy = ft_tab_strcpy(b->env);
-	DEBUG
 	if (b->env_u)
 	{
-		DEBUG
-		unset_env_one(b, b->argv[0]);
+		unset_env_one(b->argv[0], &b->env_cpy);
 		b->argv = ft_tab_remove(b->argv, 0);
 	}
 	else
@@ -68,14 +65,12 @@ void	exec_env(t_builtin *b)
 	}
 	if (b->argv[0])
 	{
-		DEBUG
 		get_path(b->argv[0], b);
 		return ;
 	}
 	else
 	{
-		DEBUG
-		while ( b->env_cpy[i])
+		while (b->env_cpy[i])
 		{
 			DEBUG
 			ft_printf("%s\n", b->env_cpy[i]);
@@ -101,48 +96,51 @@ int		search_str(char a, char *str)
 		return (-1);
 }
 
-void	exec_setenv(t_builtin *b)
+void	set_env_one(t_builtin *b, char *add, char **env, int j)
 {
 	int		i;
-	int		j;
+
+	i = 0;
+	while (env[i])
+	{
+		if (ft_strncmp(env[i], add, j) == 0)
+		{
+			ft_strdel(&env[i]);
+			env[i] = add;
+			b->argv = ft_tab_remove(b->argv, 0);
+			exec_setenv(b);
+			return ;
+		}
+		i++;
+	}
+	b->env = ft_tab_add(b->env, add);
+	b->argv = ft_tab_remove(b->argv, 0);
+}
+
+void	exec_setenv(t_builtin *b)
+{
 	char	*new;
-	char	**env;
+	int		j;
 
 	j = 0;
 	new = NULL;
-	env = b->env_or_cpy ? b->env_cpy : b->env;
 	while (b->argv[0] && (j = search_str('=', b->argv[0])) >= 0)
 	{
-		i = 0;
 		new = ft_strdup(b->argv[0]);
-		while (env[i])
-		{
-			if (ft_strncmp(env[i], new, j) == 0)
-			{
-				ft_strdel(&env[i]);
-				env[i] = new;
-			}
-			i++;
-		}
-		if (!env[i])
-			env = ft_tab_add(env, new);
-		DEBUG
-		b->argv = ft_tab_remove(b->argv, 0);
+		set_env_one(b, new, b->env_or_cpy ? b->env_cpy : b->env, j);
 	}
 }
 
-void	unset_env_one(t_builtin *b, char *remove)
+void	unset_env_one(char *remove, char ***env)
 {
 	int		j;
-	char	**env;
 
 	j = 0;
-	env = b->env_or_cpy ? b->env_cpy : b->env;
-	while (env[j])
+	while (*env[j])
 	{
-		if (ft_strncmp(remove, env[j], ft_strlen(remove)) == 0)
+		if (ft_strncmp(remove, *env[j], ft_strlen(remove)) == 0)
 		{
-			env = ft_tab_remove(env, j);
+			*env = ft_tab_remove(*env, j);
 			break ;
 		}
 		j++;
@@ -164,7 +162,7 @@ void	exec_unsetenv(t_builtin *b)
 	i = 1;
 	while (b->argv[i])
 	{
-		unset_env_one(b, b->argv[i]);
+		unset_env_one(b->argv[i], &b->env);
 		i++;
 	}
 }
