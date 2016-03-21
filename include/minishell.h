@@ -6,7 +6,7 @@
 /*   By: qdegraev <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/15 10:34:40 by qdegraev          #+#    #+#             */
-/*   Updated: 2016/03/18 18:28:10 by qdegraev         ###   ########.fr       */
+/*   Updated: 2016/03/21 17:59:35 by qdegraev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,12 +21,19 @@
 typedef struct	s_builtin
 {
 	char		**env;
+	char		**env_cpy;
 	char		**argv;
-	int			path;
+	char		*path;
+	int			path_e;
 	int			home;
 	int			pwd;
 	int			oldpwd;
 	char		error;
+	char		env_i;
+	char		env_p;
+	char		env_v;
+	char		env_u;
+	char		env_or_cpy;
 }				t_builtin;
 
 typedef struct	s_commands
@@ -38,14 +45,14 @@ typedef struct	s_commands
 /*
 **		get_path
 */
-char			*get_path(char *command, t_builtin *b);
-char			*get_command(char *command, t_builtin *b);
+void			get_path(char *command, t_builtin *b);
+void			get_command(char *command, t_builtin *b);
 void			get_env_index(t_builtin **b);
 
 /*
 **		minishell
 */
-void			loop_fork(char **env, t_builtin b);
+void			loop_fork(t_builtin b);
 
 /*
 **		tools
@@ -64,6 +71,8 @@ void			exec_cd(t_builtin *b);
 /*
 **		env
 */
+void	unset_env_one(t_builtin *b, char *remove);
+void	env_options(t_builtin *b, char *av);
 void	exec_env	(t_builtin *b);
 void	exec_setenv(t_builtin *b);
 void	exec_unsetenv(t_builtin *b);

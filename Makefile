@@ -6,13 +6,13 @@
 #    By: qdegraev <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2015/12/07 08:41:32 by qdegraev          #+#    #+#              #
-#    Updated: 2016/03/18 16:52:18 by qdegraev         ###   ########.fr        #
+#    Updated: 2016/03/21 11:20:54 by qdegraev         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 
-LIBPATH = ft_printf
-LIB = $(LIBPATH)/libftprintf.a
+LIBPATH = libft
+LIB = $(LIBPATH)/libft.a
 
 NAME = minishell
 
@@ -24,7 +24,7 @@ INCLUDES = include/
 
 CFLAGS = -g -Wall -Wextra -Werror
 
-LDFLAGS = -L ft_printf -lftprintf
+LDFLAGS = -L libft -lft
 
 SRC =  env.c \
 	minishell.c \
@@ -40,7 +40,7 @@ $(NAME): $(OBJ)
 	$(CC) $(LDFLAGS) -o $@ $^
 
 %.o: %.c
-	$(CC) $(CFLAGS) -I $(INCLUDES) -o $@ -c $<
+	$(CC) $(CFLAGS) -o $@ -c $< -I $(INCLUDES)
 
 $(LIB):
 	make -C $(LIBPATH)

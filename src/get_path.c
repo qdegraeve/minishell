@@ -6,7 +6,7 @@
 /*   By: qdegraev <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/15 17:39:03 by qdegraev          #+#    #+#             */
-/*   Updated: 2016/03/18 18:29:39 by qdegraev         ###   ########.fr       */
+/*   Updated: 2016/03/21 18:44:22 by qdegraev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,12 @@ void	get_env_index(t_builtin **b)
 	int		i;
 
 	i = 0;
-	while ((*b)->env[i])
+	DEBUG
+	while ((*b)->env && (*b)->env[i])
 	{
+		DEBUG
 		if (!ft_strncmp((*b)->env[i], "PATH=", 5))
-			(*b)->path = i;
+			(*b)->path_e = i;
 		else if (!ft_strncmp((*b)->env[i], "HOME=", 5))
 			(*b)->home = i;
 		else if (!ft_strncmp((*b)->env[i], "PWD=", 4))
@@ -29,7 +31,6 @@ void	get_env_index(t_builtin **b)
 			(*b)->oldpwd = i;
 		i++;
 	}
-
 }
 
 void	exec_exit(t_builtin *b)
@@ -38,7 +39,7 @@ void	exec_exit(t_builtin *b)
 	exit(EXIT_SUCCESS);
 }
 
-char	*get_command(char *command, t_builtin *b)
+void	get_command(char *command, t_builtin *b)
 {
 	int			i;
 	t_commands	code_error[6] = {{"cd", &exec_cd}, \
@@ -54,31 +55,37 @@ char	*get_command(char *command, t_builtin *b)
 	{
 		if (!ft_strcmp(command, code_error[i].id))
 		{
+			DEBUG
+			b->argv = ft_tab_remove(b->argv, 0);
 			code_error[i].f(b);
-			return (NULL);
+			return ;
 		}
 		i++;
 	}
-	return (get_path(command, b));
 }
 
-char	*get_path(char *command, t_builtin *b)
+void	get_path(char *command, t_builtin *b)
 {
 	char	*path;
 	char	**test;
 	int		i;
 
-	test = ft_strsplit(b->env[b->path] + 5, ':');
+	path = NULL;
+	test = NULL;
+	if (b->env[0])
+		test = ft_strsplit(b->env[b->path_e] + 5, ':');
 	i = 0;
-	while (test[i])
+	while (test && test[i])
 	{
 		test[i] = ft_cjoin(test[i], ft_strdup("/"));
 		path = ft_strjoin(test[i], command);
 		if (access(path, X_OK) == 0)
-			return (path);
+		{
+			b->path = path;
+			return ;
+		}
 		else
 			ft_strdel(&path);
 		i++;
 	}
-	return (NULL);
 }

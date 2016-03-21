@@ -6,7 +6,7 @@
 /*   By: qdegraev <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/15 10:41:00 by qdegraev          #+#    #+#             */
-/*   Updated: 2016/03/18 18:31:57 by qdegraev         ###   ########.fr       */
+/*   Updated: 2016/03/21 18:42:05 by qdegraev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,41 +29,57 @@ char	**get_argv()
 	return (caca);
 }
 
-void	init_builtin(t_builtin *b, char **env)
+void	init_builtin(t_builtin *b)
 {
-	b->env = env;
+	DEBUG
+	if (b->env_cpy)
+		clear_tab(b->env_cpy);
+	DEBUG
+	if (b->path)
+		ft_strdel(&b->path);
+	DEBUG
 	b->error = 0;
+	b->argv = get_argv();
+	b->env_i = 0;
+	b->env_p = 0;
+	b->env_u = 0;
+	b->env_v = 0;
+	b->env_or_cpy = 0;
+	b->path_e = -1;
+	b->home = -1;
+	b->pwd = -1;
+	b->oldpwd = -1;
 }
 
-void	loop_fork(char **env, t_builtin b)
+void	loop_fork(t_builtin b)
 {
 	pid_t	parent;
-	char	**argv;
 	char	*path;
 
 
-	argv = NULL;
 	path = NULL;
-	init_builtin(&b, env);
+	b.env_cpy = NULL;
 	while(42)
 	{
-		b.argv = get_argv();
+		init_builtin(&b);
+		DEBUG
 		if (b.argv[0])
-			path = get_command(b.argv[0], &b);
+			get_command(b.argv[0], &b);
+		DEBUG
 		parent = fork();
 		if (parent > 0)
-		{
 			wait(NULL);
-		}
 		else if (parent == -1)
-		{
-			ft_printf("father = %d\n", parent);
 			exit(EXIT_FAILURE);
-		}
 		else if (parent == 0)
 		{
-			if (path)
-				execve(path, b.argv, b.env);
+			if (b.path)
+			{
+				if (!b.env_or_cpy)
+					execve(b.path, b.argv, b.env);
+				if (!b.env_or_cpy)
+					execve(b.path, b.argv, b.env_cpy);
+			}
 			exit(EXIT_SUCCESS);
 		}
 	}
@@ -73,9 +89,12 @@ int		main(int ac, char **av, char **env)
 {
 	t_builtin b;
 
+	b.env = NULL;
 	if (ac != 1 || av[1])
 		return (0);
 	ft_bzero(&b, sizeof(b));
-	loop_fork(ft_tab_strcpy(env), b);
+	if (env)
+		b.env = ft_tab_strcpy(env);
+	loop_fork(b);
 	return (0);
 }

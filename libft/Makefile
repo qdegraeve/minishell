@@ -6,13 +6,13 @@
 #    By: afillion <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2015/11/30 15:37:28 by afillion          #+#    #+#              #
-#    Updated: 2016/03/16 10:43:01 by qdegraev         ###   ########.fr        #
+#    Updated: 2016/03/21 11:13:58 by qdegraev         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = libft.a
 
-VPATH = srcs:obj
+VPATH = srcs:srcs/libft:srcs/ft_printf
 
 INCLUDES = include/
 
@@ -86,6 +86,22 @@ SRC =  ft_strlcat.c \
 	ft_abs.c \
 	ft_itoa_base.c \
 	ft_cleanjoin.c \
+	ft_printf.c \
+	types.c \
+	arg_length.c \
+	flags.c \
+	ft_putnbru.c \
+	ft_utoa_base.c \
+	type_d_i.c \
+	type_s.c \
+	type_x.c \
+	type_percent.c \
+	type_f.c \
+	type_c.c \
+	type_u.c \
+	type_o.c \
+	type_p.c \
+	ft_wchar.c \
 
 OBJ = $(SRC:.c=.o)
 
