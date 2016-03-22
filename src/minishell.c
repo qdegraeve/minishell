@@ -6,12 +6,11 @@
 /*   By: qdegraev <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/15 10:41:00 by qdegraev          #+#    #+#             */
-/*   Updated: 2016/03/21 20:26:01 by qdegraev         ###   ########.fr       */
+/*   Updated: 2016/03/22 18:32:31 by qdegraev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include <stdio.h>
 
 char	**get_argv()
 {
@@ -32,16 +31,21 @@ char	**get_argv()
 void	init_builtin(t_builtin *b)
 {
 	if (b->env_cpy)
-		clear_tab(b->env_cpy);
+	{
+		clear_tab(b->env);
+		b->env = b->env_cpy;
+		b->env_cpy = NULL;
+	}
 	if (b->path)
 		ft_strdel(&b->path);
+	if (b->argv)
+		clear_tab(b->argv);
 	b->error = 0;
 	b->argv = get_argv();
 	b->env_i = 0;
 	b->env_p = 0;
 	b->env_u = 0;
 	b->env_v = 0;
-	b->env_or_cpy = 0;
 	b->path_e = -1;
 	b->home = -1;
 	b->pwd = -1;
@@ -52,7 +56,6 @@ void	loop_fork(t_builtin b)
 {
 	pid_t	parent;
 	char	*path;
-
 
 	path = NULL;
 	b.env_cpy = NULL;
@@ -70,10 +73,7 @@ void	loop_fork(t_builtin b)
 		{
 			if (b.path)
 			{
-				if (!b.env_or_cpy)
 					execve(b.path, b.argv, b.env);
-				if (b.env_or_cpy)
-					execve(b.path, b.argv, b.env_cpy);
 			}
 			exit(EXIT_SUCCESS);
 		}
@@ -88,8 +88,11 @@ int		main(int ac, char **av, char **env)
 	if (ac != 1 || av[1])
 		return (0);
 	ft_bzero(&b, sizeof(b));
-	if (env)
+	if (env[0])
+	{
+		DEBUG
 		b.env = ft_tab_strcpy(env);
+	}
 	loop_fork(b);
 	return (0);
 }

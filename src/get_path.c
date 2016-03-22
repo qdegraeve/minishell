@@ -6,7 +6,7 @@
 /*   By: qdegraev <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/15 17:39:03 by qdegraev          #+#    #+#             */
-/*   Updated: 2016/03/21 20:26:05 by qdegraev         ###   ########.fr       */
+/*   Updated: 2016/03/22 18:59:40 by qdegraev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,9 @@ void	get_env_index(t_builtin **b)
 	while ((*b)->env && (*b)->env[i])
 	{
 		if (!ft_strncmp((*b)->env[i], "PATH=", 5))
+		{
 			(*b)->path_e = i;
+		}
 		else if (!ft_strncmp((*b)->env[i], "HOME=", 5))
 			(*b)->home = i;
 		else if (!ft_strncmp((*b)->env[i], "PWD=", 4))
@@ -40,7 +42,9 @@ void	exec_exit(t_builtin *b)
 void	get_command(char *command, t_builtin *b)
 {
 	int			i;
-	t_commands	code_error[6] = {{"cd", &exec_cd}, \
+	t_commands	code_error[6];
+	
+	code_error = {{"cd", &exec_cd},
 	{"env", &exec_env},
 	{"setenv", &exec_setenv},
 	{"unsetenv", &exec_unsetenv},
@@ -80,10 +84,12 @@ void	get_path(char *command, t_builtin *b)
 		if (access(path, X_OK) == 0)
 		{
 			b->path = path;
+			clear_tab(test);
 			return ;
 		}
 		else
 			ft_strdel(&path);
 		i++;
 	}
+	clear_tab(test);
 }

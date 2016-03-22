@@ -6,7 +6,7 @@
 #    By: qdegraev <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2015/12/07 08:41:32 by qdegraev          #+#    #+#              #
-#    Updated: 2016/03/21 11:20:54 by qdegraev         ###   ########.fr        #
+#    Updated: 2016/03/22 12:47:53 by qdegraev         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,6 +27,7 @@ CFLAGS = -g -Wall -Wextra -Werror
 LDFLAGS = -L libft -lft
 
 SRC =  env.c \
+	set_unset_env.c \
 	minishell.c \
 	get_path.c \
 	command_cd.c \

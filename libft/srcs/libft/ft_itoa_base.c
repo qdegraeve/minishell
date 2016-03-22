@@ -6,7 +6,7 @@
 /*   By: qdegraev <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/16 09:50:26 by qdegraev          #+#    #+#             */
-/*   Updated: 2016/03/16 09:59:20 by qdegraev         ###   ########.fr       */
+/*   Updated: 2016/03/22 18:26:45 by qdegraev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ int		ft_numlen(size_t num, int base)
 		len++;
 	return (len);
 }
+
 char	*ft_itoa_base(int value, int base)
 {
 	int		len;

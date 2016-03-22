@@ -6,7 +6,7 @@
 /*   By: qdegraev <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/16 15:26:58 by qdegraev          #+#    #+#             */
-/*   Updated: 2016/03/18 15:48:13 by qdegraev         ###   ########.fr       */
+/*   Updated: 2016/03/22 18:24:44 by qdegraev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 void	cd_home(t_builtin *b, char *path)
 {
 	struct stat		stat;
-
 
 	if (lstat(path, &stat) != 0)
 	{
@@ -32,6 +31,7 @@ void	cd_home(t_builtin *b, char *path)
 	}
 	else
 	{
+		set_env_one(b, ft_strjoin("OLPWD=", b->env[b->pwd] + 4), 6);
 		ft_strdel(&b->env[b->oldpwd]);
 		b->env[b->oldpwd] = ft_strjoin("OLPWD=", b->env[b->pwd] + 4);
 		chdir(path);

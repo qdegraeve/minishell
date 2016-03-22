@@ -1,4 +1,4 @@
-/* ************************************************************************* */
+/* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   tools.c                                            :+:      :+:    :+:   */
@@ -6,11 +6,25 @@
 /*   By: qdegraev <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/17 15:50:26 by qdegraev          #+#    #+#             */
-/*   Updated: 2016/03/21 20:39:20 by qdegraev         ###   ########.fr       */
+/*   Updated: 2016/03/22 18:20:38 by qdegraev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void	ft_print_tab(char **tab)
+{
+	int i;
+
+	i = 0;
+	if (!tab || !tab[i])
+		return ;
+	while (tab[i])
+	{
+		ft_printf("%s\n", tab[i]);
+		i++;
+	}
+}
 
 char	**ft_tab_strcpy(char **to_copy)
 {
@@ -42,8 +56,8 @@ void	clear_tab(char **tab)
 		ft_strdel(&tab[i]);
 		i++;
 	}
-//	if (tab)
-//		free(tab);
+	if (tab)
+		free(tab);
 	tab = NULL;
 }
 

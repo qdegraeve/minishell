@@ -6,17 +6,17 @@
 /*   By: qdegraev <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/15 10:34:40 by qdegraev          #+#    #+#             */
-/*   Updated: 2016/03/21 22:06:47 by qdegraev         ###   ########.fr       */
+/*   Updated: 2016/03/22 18:31:32 by qdegraev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
-#include "../libft/include/ft_printf.h"
+# include "../libft/include/ft_printf.h"
 
-#include <unistd.h>
-#include <sys/stat.h>
+# include <unistd.h>
+# include <sys/stat.h>
 
 typedef struct	s_builtin
 {
@@ -61,21 +61,26 @@ char			**ft_tab_strcpy(char **to_copy);
 void			clear_tab(char **tab);
 char			**ft_tab_remove(char **tab, int line);
 char			**ft_tab_add(char **tab, char *var);
+void			ft_print_tab(char **tab);
 
 /*
 **		exec_cd
 */
 void			exec_cd(t_builtin *b);
 
-
 /*
 **		env
 */
-void	set_env_one(t_builtin *b, char *add, char **env, int j);
-void	unset_env_one(char *remove, char ***env);
-void	env_options(t_builtin *b, char *av);
-void	exec_env	(t_builtin *b);
-void	exec_setenv(t_builtin *b);
-void	exec_unsetenv(t_builtin *b);
+void			exec_env	(t_builtin *b);
+void			env_options(t_builtin *b, char *av);
+void			set_env_options(t_builtin *b);
+
+/*
+**		set / unset -- env
+*/
+void			exec_setenv(t_builtin *b);
+void			exec_unsetenv(t_builtin *b);
+void			set_env_one(t_builtin *b, char *add, int j);
+void			unset_env_one(char *remove, t_builtin *b);
 
 #endif
