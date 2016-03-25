@@ -6,7 +6,7 @@
 /*   By: qdegraev <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/22 12:39:03 by qdegraev          #+#    #+#             */
-/*   Updated: 2016/03/22 17:54:13 by qdegraev         ###   ########.fr       */
+/*   Updated: 2016/03/25 16:25:14 by qdegraev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ void	set_env_one(t_builtin *b, char *add, int j)
 	int		i;
 
 	i = 0;
-	while (b->env[i])
+	while (b->env && b->env[i])
 	{
 		if (ft_strncmp(b->env[i], add, j) == 0)
 		{
@@ -46,7 +46,8 @@ void	set_env_one(t_builtin *b, char *add, int j)
 		i++;
 	}
 	b->env = ft_tab_add(b->env, add);
-	b->argv = ft_tab_remove(b->argv, 0);
+	if (!b->path_e)
+		b->argv = ft_tab_remove(b->argv, 0);
 }
 
 void	exec_setenv(t_builtin *b)
@@ -68,7 +69,7 @@ void	unset_env_one(char *remove, t_builtin *b)
 	int		j;
 
 	j = 0;
-	while (b->env[j])
+	while (b->env && b->env[j])
 	{
 		if (ft_strncmp(remove, b->env[j], ft_strlen(remove)) == 0)
 		{
@@ -89,6 +90,7 @@ void	exec_unsetenv(t_builtin *b)
 	if (i < 1)
 	{
 		ft_putendl_fd("unsetenv: too few arguments", 2);
+		b->error = 1;
 		return ;
 	}
 	i = 0;

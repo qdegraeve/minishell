@@ -6,27 +6,11 @@
 /*   By: qdegraev <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/15 10:41:00 by qdegraev          #+#    #+#             */
-/*   Updated: 2016/03/22 18:32:31 by qdegraev         ###   ########.fr       */
+/*   Updated: 2016/03/25 16:55:04 by qdegraev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-char	**get_argv()
-{
-	char *line;
-	char **caca;
-
-	line = NULL;
-	ft_putstr_fd("\033[31m", 1);
-	ft_putstr_fd("ecris sale batard : > ", 1);
-	ft_putstr_fd("\033[0m", 1);
-	get_next_line(0, &line);
-	caca = ft_strsplit(line, ' ');
-	if (line)
-		ft_strdel(&line);
-	return (caca);
-}
 
 void	init_builtin(t_builtin *b)
 {
@@ -40,16 +24,23 @@ void	init_builtin(t_builtin *b)
 		ft_strdel(&b->path);
 	if (b->argv)
 		clear_tab(b->argv);
-	b->error = 0;
-	b->argv = get_argv();
 	b->env_i = 0;
 	b->env_p = 0;
 	b->env_u = 0;
 	b->env_v = 0;
 	b->path_e = -1;
 	b->home = -1;
-	b->pwd = -1;
-	b->oldpwd = -1;
+	b->argv = get_argv(b);
+	b->error = 0;
+}
+
+void	sig_handler(int sig)
+{
+	if (sig == 2)
+	{
+		ft_putendl("");
+		prompt(1);
+	}
 }
 
 void	loop_fork(t_builtin b)
@@ -59,23 +50,24 @@ void	loop_fork(t_builtin b)
 
 	path = NULL;
 	b.env_cpy = NULL;
-	while(42)
+	b.error = 0;
+	while (42)
 	{
 		init_builtin(&b);
 		if (b.argv[0])
 			get_command(b.argv[0], &b);
-		parent = fork();
-		if (parent > 0)
-			wait(NULL);
-		else if (parent == -1)
-			exit(EXIT_FAILURE);
-		else if (parent == 0)
+		if (b.path)
 		{
-			if (b.path)
+			parent = fork();
+			if (parent > 0)
+				wait(NULL);
+			else if (parent == -1)
+				exit(EXIT_FAILURE);
+			else if (parent == 0)
 			{
-					execve(b.path, b.argv, b.env);
+				if (execve(b.path, b.argv, b.env) == -1)
+					b.error = 1;
 			}
-			exit(EXIT_SUCCESS);
 		}
 	}
 }
@@ -89,10 +81,8 @@ int		main(int ac, char **av, char **env)
 		return (0);
 	ft_bzero(&b, sizeof(b));
 	if (env[0])
-	{
-		DEBUG
 		b.env = ft_tab_strcpy(env);
-	}
+	signal(SIGINT, sig_handler);
 	loop_fork(b);
 	return (0);
 }

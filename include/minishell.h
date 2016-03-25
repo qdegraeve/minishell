@@ -6,7 +6,7 @@
 /*   By: qdegraev <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/15 10:34:40 by qdegraev          #+#    #+#             */
-/*   Updated: 2016/03/22 18:31:32 by qdegraev         ###   ########.fr       */
+/*   Updated: 2016/03/25 16:59:55 by qdegraev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,6 @@ typedef struct	s_builtin
 	char		*path;
 	int			path_e;
 	int			home;
-	int			pwd;
-	int			oldpwd;
 	char		error;
 	char		env_i;
 	char		env_p;
@@ -42,17 +40,29 @@ typedef struct	s_commands
 	void		(*f)(t_builtin*);
 }				t_commands;
 
+typedef struct stat	t_stat;
+
+/*
+**		minishell
+*/
+void			loop_fork(t_builtin b);
+void			sig_handler(int sig);
+void			init_builtin(t_builtin *b);
+
+/*
+**		prompt
+*/
+char			*get_pwd_prompt(char *path);
+void			prompt(int error);
+char			**get_argv(t_builtin *b);
+
 /*
 **		get_path
 */
 void			get_path(char *command, t_builtin *b);
 void			get_command(char *command, t_builtin *b);
 void			get_env_index(t_builtin **b);
-
-/*
-**		minishell
-*/
-void			loop_fork(t_builtin b);
+void			exec_exit(t_builtin *b);
 
 /*
 **		tools

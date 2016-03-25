@@ -6,7 +6,7 @@
 /*   By: qdegraev <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/17 15:50:26 by qdegraev          #+#    #+#             */
-/*   Updated: 2016/03/22 18:20:38 by qdegraev         ###   ########.fr       */
+/*   Updated: 2016/03/25 16:51:15 by qdegraev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,8 @@ void	clear_tab(char **tab)
 	int		i;
 
 	i = 0;
+	if (!tab)
+		return ;
 	while (tab && tab[i] && tab[i][0])
 	{
 		ft_strdel(&tab[i]);
@@ -95,7 +97,7 @@ char	**ft_tab_add(char **tab, char *var)
 
 	i = 0;
 	j = 0;
-	while (tab[i])
+	while (tab && tab[i])
 		i++;
 	copy = (char**)malloc(sizeof(*copy) * (i + 2));
 	ft_bzero(copy, sizeof(copy));

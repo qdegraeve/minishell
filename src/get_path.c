@@ -6,11 +6,18 @@
 /*   By: qdegraev <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/15 17:39:03 by qdegraev          #+#    #+#             */
-/*   Updated: 2016/03/22 18:59:40 by qdegraev         ###   ########.fr       */
+/*   Updated: 2016/03/25 17:25:05 by qdegraev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+const t_commands	g_code_error[6] = {{"cd", &exec_cd},
+	{"env", &exec_env},
+	{"setenv", &exec_setenv},
+	{"unsetenv", &exec_unsetenv},
+	{"exit", &exec_exit},
+	{"quit", &exec_exit}};
 
 void	get_env_index(t_builtin **b)
 {
@@ -20,50 +27,58 @@ void	get_env_index(t_builtin **b)
 	while ((*b)->env && (*b)->env[i])
 	{
 		if (!ft_strncmp((*b)->env[i], "PATH=", 5))
-		{
 			(*b)->path_e = i;
-		}
 		else if (!ft_strncmp((*b)->env[i], "HOME=", 5))
 			(*b)->home = i;
-		else if (!ft_strncmp((*b)->env[i], "PWD=", 4))
-			(*b)->pwd = i;
-		else if (!ft_strncmp((*b)->env[i], "OLDPWD=", 7))
-			(*b)->oldpwd = i;
 		i++;
+	}
+	if ((*b)->path_e == -1)
+	{
+		set_env_one(*b, ft_strdup("PATH=/usr/bin:/bin:/usr/sbin:/sbin:/usr/\
+local/bin:/usr/local/munkii"), 5);
+		get_env_index(b);
 	}
 }
 
 void	exec_exit(t_builtin *b)
 {
-	b->error = 1;
+	b->error = 0;
 	exit(EXIT_SUCCESS);
 }
 
 void	get_command(char *command, t_builtin *b)
 {
 	int			i;
-	t_commands	code_error[6];
-	
-	code_error = {{"cd", &exec_cd},
-	{"env", &exec_env},
-	{"setenv", &exec_setenv},
-	{"unsetenv", &exec_unsetenv},
-	{"exit", &exec_exit},
-	{"quit", &exec_exit}};
 
 	i = 0;
 	get_env_index(&b);
 	while (i < 6)
 	{
-		if (!ft_strcmp(command, code_error[i].id))
+		if (!ft_strcmp(command, g_code_error[i].id))
 		{
 			b->argv = ft_tab_remove(b->argv, 0);
-			code_error[i].f(b);
+			g_code_error[i].f(b);
 			return ;
 		}
 		i++;
 	}
 	get_path(b->argv[0], b);
+}
+
+void	no_path(t_builtin *b, char *command, char **test)
+{
+	if (command[0] == '.' || command[0] == '/')
+		if (access(command, X_OK) == 0)
+		{
+			b->path = ft_strdup(command);
+			clear_tab(test);
+			return ;
+		}
+	clear_tab(test);
+	b->error = 1;
+	ft_putstr_fd("minishell: command not found: ", 2);
+	ft_putendl_fd(command, 2);
+	b->path = NULL;
 }
 
 void	get_path(char *command, t_builtin *b)
@@ -91,5 +106,5 @@ void	get_path(char *command, t_builtin *b)
 			ft_strdel(&path);
 		i++;
 	}
-	clear_tab(test);
+	no_path(b, command, test);
 }
