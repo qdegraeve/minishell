@@ -52,23 +52,21 @@ void	set_env_options(t_builtin *b)
 void	exec_env(t_builtin *b)
 {
 	int		i;
-	int		j;
 
 	i = 0;
-	j = 0;
 	if (!b->argv[0])
 	{
 		ft_print_tab(b->env);
 		return ;
 	}
-	while (b->argv[i][0] == '-')
+	while (b->argv[i] && b->argv[i][0] == '-')
 	{
 		env_options(b, b->argv[i]);
 		b->argv = ft_tab_remove(b->argv, i);
 	}
 	set_env_options(b);
 	if (b->argv[0])
-		get_path(b->argv[0], b);
+		get_command(b->argv[0], b);
 	else
 		ft_print_tab(b->env);
 }

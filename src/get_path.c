@@ -24,6 +24,8 @@ void	get_env_index(t_builtin **b)
 	int		i;
 
 	i = 0;
+	(*b)->path_e = -1;
+	(*b)->home = -1;
 	while ((*b)->env && (*b)->env[i])
 	{
 		if (!ft_strncmp((*b)->env[i], "PATH=", 5))

@@ -16,7 +16,7 @@ VPATH = srcs:srcs/libft:srcs/ft_printf
 
 INCLUDES = include/
 
-CC = gcc
+CC = clang
 
 CFLAGS = -Wall -Wextra -Werror
 

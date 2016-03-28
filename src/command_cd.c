@@ -12,6 +12,35 @@
 
 #include "minishell.h"
 
+void	cd_oldpwd(t_builtin *b)
+{
+	int		i;
+	char	*pwd;
+	char	*swap;
+
+	i = 0;
+	pwd = NULL;
+	swap = NULL;
+	ft_printf("error = (%d)\n", b->error);
+	while (b->env && b->env[i])
+	{
+		if (!ft_strncmp(b->env[i], "OLDPWD=", 7))
+		{
+			ft_printf("error = (%d)\n", b->error);
+			swap = ft_strdup(b->env[i] + 7);
+			set_env_one(b, ft_strjoin("PWD=", swap), 4);
+			set_env_one(b, ft_cjoin(ft_strdup("OLDPWD="), getcwd(pwd, 255)), 7);
+			chdir(swap);
+			ft_strdel(&swap);
+			return ;
+		}
+		i++;
+	}
+	ft_putstr_fd("cd: no OLDPWD defined", 2);
+	b->error = 1;
+	return ;
+}
+
 void	cd_home(t_builtin *b, char *path)
 {
 	t_stat		stat;
@@ -47,10 +76,14 @@ void	cd_path(t_builtin *b)
 	char			*pwd;
 
 	pwd = NULL;
+	path = NULL;
+	ft_printf("error = (%d)\n", b->error);
 	if (b->argv[0][0] == '~')
 		path = ft_strjoin(b->env[b->home] + 5, b->argv[0] + 1);
 	else if (b->argv[0][0] == '/')
 		path = ft_strdup(b->argv[0]);
+	else if (b->argv[0][0] == '-' && !b->argv[0][1])
+		cd_oldpwd(b);
 	else
 	{
 		path = ft_cjoin(getcwd(pwd, 255), ft_strdup("/"));
@@ -87,7 +120,7 @@ void	exec_cd(t_builtin *b)
 		ft_putstr_fd("cd: string not in pwd:", 2);
 		ft_putendl_fd(b->argv[0], 2);
 		b->error = 1;
-		exit(EXIT_FAILURE);
+		return ;
 	}
 	else
 		cd_path(b);

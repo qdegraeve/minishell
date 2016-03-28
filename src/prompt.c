@@ -29,9 +29,9 @@ void	prompt(int error)
 	path = NULL;
 	ft_putstr_fd("\033[1;36m", 1);
 	if (error)
-		ft_printf("⚰  %s \033[1;31m: > ", get_pwd_prompt(getcwd(path, 255)));
+		ft_printf("%s \033[1;31m: > ", get_pwd_prompt(getcwd(path, 255)));
 	else
-		ft_printf("💸  %s \033[1;32m: > ", get_pwd_prompt(getcwd(path, 255)));
+		ft_printf("%s \033[1;32m: > ", get_pwd_prompt(getcwd(path, 255)));
 	ft_putstr_fd("\033[0m", 1);
 }
 

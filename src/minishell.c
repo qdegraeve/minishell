@@ -46,9 +46,7 @@ void	sig_handler(int sig)
 void	loop_fork(t_builtin b)
 {
 	pid_t	parent;
-	char	*path;
 
-	path = NULL;
 	b.env_cpy = NULL;
 	b.error = 0;
 	while (42)

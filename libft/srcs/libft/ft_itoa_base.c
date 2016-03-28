@@ -32,7 +32,6 @@ char	*ft_itoa_base(int value, int base)
 		return (NULL);
 	len = (base == 10 && value < 0) ? 2 : 1;
 	sign = value < 0 ? -1 : 1;
-	value = base == 10 ? value : (unsigned int)value;
 	len = ft_numlen(value, base);
 	if (!(ret = (char*)malloc(sizeof(char) * len + 1)))
 		return (NULL);

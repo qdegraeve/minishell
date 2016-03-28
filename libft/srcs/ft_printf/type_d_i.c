@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "ft_printf.h"
+#include <inttypes.h>
 
 char	*type_d_std(long long d, t_arg *a)
 {

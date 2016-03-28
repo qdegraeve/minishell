@@ -16,7 +16,7 @@ LIB = $(LIBPATH)/libft.a
 
 NAME = minishell
 
-CC = gcc
+CC = clang
 
 VPATH = src:../include
 
@@ -39,7 +39,7 @@ OBJ = $(SRC:.c=.o)
 all: $(LIB) $(NAME)
 
 $(NAME): $(OBJ)
-	$(CC) $(LDFLAGS) -o $@ $^
+	$(CC) -o $@ $^ $(LDFLAGS)
 
 %.o: %.c
 	$(CC) $(CFLAGS) -o $@ -c $< -I $(INCLUDES)

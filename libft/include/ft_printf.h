@@ -18,6 +18,7 @@
 # include <stdarg.h>
 # include <stdlib.h>
 # include <unistd.h>
+# include <inttypes.h>
 
 typedef struct		s_arg
 {

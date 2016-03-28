@@ -23,7 +23,7 @@ void	type_s(t_arg *a)
 		s = ft_strdup("(null)");
 	if (!s[0])
 		ft_repeat_char(' ', a->l);
-	a->ret = !s[0] || a->p == 0 ? a->l : ft_strlen(s);
+	a->ret = !s[0] || a->p == 0 ? a->l : (int)ft_strlen(s);
 	i = a->p >= 0 && a->p < a->ret ? a->l - a->p : a->l - a->ret;
 	if (!a->f_m && s[0])
 		a->f_zero ? ft_repeat_char('0', i) : ft_repeat_char(' ', i);
