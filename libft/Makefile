@@ -6,7 +6,7 @@
 #    By: afillion <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2015/11/30 15:37:28 by afillion          #+#    #+#              #
-#    Updated: 2016/03/21 11:13:58 by qdegraev         ###   ########.fr        #
+#    Updated: 2016/03/29 17:34:06 by qdegraev         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,7 @@ INCLUDES = include/
 
 CC = clang
 
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -g -Wall -Wextra -Werror
 
 SRC =  ft_strlcat.c \
 	ft_lstiter.c \

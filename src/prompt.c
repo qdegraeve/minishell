@@ -6,7 +6,7 @@
 /*   By: qdegraev <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/25 16:47:58 by qdegraev          #+#    #+#             */
-/*   Updated: 2016/03/25 16:54:03 by qdegraev         ###   ########.fr       */
+/*   Updated: 2016/03/29 20:20:26 by qdegraev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,12 +27,14 @@ void	prompt(int error)
 	char	*path;
 
 	path = NULL;
+	path = getcwd(path, 255);
 	ft_putstr_fd("\033[1;36m", 1);
 	if (error)
-		ft_printf("%s \033[1;31m: > ", get_pwd_prompt(getcwd(path, 255)));
+		ft_printf("%s \033[1;31m: > ", get_pwd_prompt(path));
 	else
-		ft_printf("%s \033[1;32m: > ", get_pwd_prompt(getcwd(path, 255)));
+		ft_printf("%s \033[1;32m: > ", get_pwd_prompt(path));
 	ft_putstr_fd("\033[0m", 1);
+	ft_strdel(&path);
 }
 
 char	**get_argv(t_builtin *b)

@@ -6,7 +6,7 @@
 /*   By: qdegraev <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/16 15:26:58 by qdegraev          #+#    #+#             */
-/*   Updated: 2016/03/25 17:12:42 by qdegraev         ###   ########.fr       */
+/*   Updated: 2016/03/29 20:37:13 by qdegraev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,12 +21,10 @@ void	cd_oldpwd(t_builtin *b)
 	i = 0;
 	pwd = NULL;
 	swap = NULL;
-	ft_printf("error = (%d)\n", b->error);
 	while (b->env && b->env[i])
 	{
 		if (!ft_strncmp(b->env[i], "OLDPWD=", 7))
 		{
-			ft_printf("error = (%d)\n", b->error);
 			swap = ft_strdup(b->env[i] + 7);
 			set_env_one(b, ft_strjoin("PWD=", swap), 4);
 			set_env_one(b, ft_cjoin(ft_strdup("OLDPWD="), getcwd(pwd, 255)), 7);
@@ -47,7 +45,7 @@ void	cd_home(t_builtin *b, char *path)
 	char		*pwd;
 
 	pwd = NULL;
-	if (lstat(path, &stat) != 0)
+	if (lstat(path = ft_cjoin(path, ft_strdup("/")), &stat) != 0)
 	{
 		b->error = 1;
 		ft_strdel(&path);
@@ -77,13 +75,20 @@ void	cd_path(t_builtin *b)
 
 	pwd = NULL;
 	path = NULL;
-	ft_printf("error = (%d)\n", b->error);
 	if (b->argv[0][0] == '~')
-		path = ft_strjoin(b->env[b->home] + 5, b->argv[0] + 1);
+	{
+		if ((pwd = ft_getenv("HOME", b->env)) != NULL)
+			path = ft_strjoin(pwd, b->argv[0] + 1);
+		else
+			cd_no_home(b);
+	}
 	else if (b->argv[0][0] == '/')
 		path = ft_strdup(b->argv[0]);
 	else if (b->argv[0][0] == '-' && !b->argv[0][1])
+	{
 		cd_oldpwd(b);
+		return ;
+	}
 	else
 	{
 		path = ft_cjoin(getcwd(pwd, 255), ft_strdup("/"));
@@ -103,12 +108,12 @@ void	exec_cd(t_builtin *b)
 	char		*pwd;
 
 	pwd = NULL;
-	if (!b->argv[0])
+	if (!b->argv[0] || !ft_strcmp(b->argv[0], "--"))
 	{
 		if (b->home != -1)
 		{
 			set_env_one(b, ft_cjoin(ft_strdup("OLDPWD="), getcwd(pwd, 255)), 7);
-			chdir(b->env[b->home] + 5);
+			chdir(ft_getenv("HOME", b->env));
 			set_env_one(b, ft_cjoin(ft_strdup("PWD="), getcwd(pwd, 255)), 4);
 		}
 		else

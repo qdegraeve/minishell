@@ -6,7 +6,7 @@
 /*   By: qdegraev <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/15 10:41:00 by qdegraev          #+#    #+#             */
-/*   Updated: 2016/03/25 16:55:04 by qdegraev         ###   ########.fr       */
+/*   Updated: 2016/03/29 20:39:59 by qdegraev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ void	init_builtin(t_builtin *b)
 		ft_strdel(&b->path);
 	if (b->argv)
 		clear_tab(b->argv);
+	b->path = NULL;
 	b->env_i = 0;
 	b->env_p = 0;
 	b->env_u = 0;

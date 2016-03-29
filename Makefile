@@ -6,7 +6,7 @@
 #    By: qdegraev <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2015/12/07 08:41:32 by qdegraev          #+#    #+#              #
-#    Updated: 2016/03/25 16:52:27 by qdegraev         ###   ########.fr        #
+#    Updated: 2016/03/29 15:05:43 by qdegraev         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -33,6 +33,7 @@ SRC =  env.c \
 	command_cd.c \
 	tools.c \
 	prompt.c \
+	get_env.c \
 
 OBJ = $(SRC:.c=.o)
 

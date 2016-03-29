@@ -6,7 +6,7 @@
 /*   By: qdegraev <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/12/18 14:25:24 by qdegraev          #+#    #+#             */
-/*   Updated: 2016/03/16 10:18:41 by qdegraev         ###   ########.fr       */
+/*   Updated: 2016/03/29 18:18:41 by qdegraev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ char	*clear_tmp(char *tmp, int k)
 {
 	char *stock;
 
+	stock = NULL;
 	stock = ft_strnew(ft_strlen(tmp + k));
 	ft_strncpy(stock, tmp + k, ft_strlen(tmp + k));
 	ft_strdel(&tmp);
@@ -26,6 +27,7 @@ char	*new_join(char *tmp, char *buf)
 {
 	char	*stock;
 
+	stock = NULL;
 	stock = ft_strjoin(tmp, buf);
 	if (tmp)
 		ft_strdel(&tmp);
@@ -53,9 +55,10 @@ int		get_next_line(int const fd, char **line)
 {
 	int			ret;
 	int			k;
-	static char	*tmp[256];
+	static char	*tmp[256] = {NULL};
 	char		*buf;
 
+	buf = NULL;
 	buf = ft_strnew(BUF_SIZE);
 	if ((ret = read(fd, buf, BUF_SIZE)) == -1 || line == NULL || buf == NULL)
 		return (-1);

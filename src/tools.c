@@ -6,7 +6,7 @@
 /*   By: qdegraev <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/17 15:50:26 by qdegraev          #+#    #+#             */
-/*   Updated: 2016/03/25 16:51:15 by qdegraev         ###   ########.fr       */
+/*   Updated: 2016/03/29 19:51:12 by qdegraev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,9 +34,11 @@ char	**ft_tab_strcpy(char **to_copy)
 
 	i = 0;
 	j = 0;
+	copy = NULL;
 	while (to_copy[i])
 		i++;
-	copy = (char**)malloc(sizeof(copy) * (i + 1));
+	copy = (char**)malloc(sizeof(*copy) * (i + 1));
+	ft_bzero(copy, sizeof(*copy) * (i + 1));
 	while (j < i)
 	{
 		copy[j] = ft_strdup(to_copy[j]);
@@ -73,9 +75,11 @@ char	**ft_tab_remove(char **tab, int line)
 	i = 0;
 	j = 0;
 	k = 0;
+	copy = NULL;
 	while (tab && tab[i])
 		i++;
-	copy = (char**)malloc(sizeof(copy) * i);
+	copy = (char**)malloc(sizeof(*copy) * i);
+	ft_bzero(copy, sizeof(*copy) * (i));
 	while (j < i)
 	{
 		if (j != line)
@@ -85,6 +89,7 @@ char	**ft_tab_remove(char **tab, int line)
 		j++;
 	}
 	free(tab);
+	tab = NULL;
 	copy[k] = NULL;
 	return (copy);
 }
@@ -97,16 +102,18 @@ char	**ft_tab_add(char **tab, char *var)
 
 	i = 0;
 	j = 0;
+	copy = NULL;
 	while (tab && tab[i])
 		i++;
 	copy = (char**)malloc(sizeof(*copy) * (i + 2));
-	ft_bzero(copy, sizeof(copy));
+	ft_bzero(copy, sizeof(*copy) * (i + 2));
 	while (j < i)
 	{
 		copy[j] = tab[j];
 		j++;
 	}
 	free(tab);
+	tab = NULL;
 	copy[j++] = var;
 	copy[j] = NULL;
 	return (copy);
