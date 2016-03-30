@@ -6,7 +6,7 @@
 /*   By: qdegraev <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/17 17:46:23 by qdegraev          #+#    #+#             */
-/*   Updated: 2016/03/25 16:25:29 by qdegraev         ###   ########.fr       */
+/*   Updated: 2016/03/30 16:30:54 by qdegraev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,11 @@ void	env_options(t_builtin *b, char *av)
 void	set_env_options(t_builtin *b)
 {
 	if (!b->env_i)
+	{
+		if (b->env_cpy)
+			clear_tab(b->env_cpy);
 		b->env_cpy = ft_tab_strcpy(b->env);
+	}
 	else
 	{
 		b->env_cpy = b->env;

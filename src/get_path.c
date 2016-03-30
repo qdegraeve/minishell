@@ -6,7 +6,7 @@
 /*   By: qdegraev <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/15 17:39:03 by qdegraev          #+#    #+#             */
-/*   Updated: 2016/03/29 20:34:29 by qdegraev         ###   ########.fr       */
+/*   Updated: 2016/03/30 16:37:19 by qdegraev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,7 @@ void	get_env_index(t_builtin **b)
 	}
 	if ((*b)->path_e == -1)
 	{
-		set_env_one(*b, ft_strdup("PATH=/usr/bin:/bin:/usr/sbin:/sbin:/usr/\
-local/bin:/usr/local/munkii"), 5);
+		set_env_one(*b, path_gen(), 5);
 		get_env_index(b);
 	}
 }

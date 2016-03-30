@@ -6,7 +6,7 @@
 /*   By: qdegraev <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/22 12:39:03 by qdegraev          #+#    #+#             */
-/*   Updated: 2016/03/29 20:36:25 by qdegraev         ###   ########.fr       */
+/*   Updated: 2016/03/30 12:51:26 by qdegraev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,8 +46,6 @@ void	set_env_one(t_builtin *b, char *add, int j)
 		i++;
 	}
 	b->env = ft_tab_add(b->env, add);
-	if (!b->path_e)
-		b->argv = ft_tab_remove(b->argv, 0);
 }
 
 void	exec_setenv(t_builtin *b)

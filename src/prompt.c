@@ -6,7 +6,7 @@
 /*   By: qdegraev <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/25 16:47:58 by qdegraev          #+#    #+#             */
-/*   Updated: 2016/03/29 20:20:26 by qdegraev         ###   ########.fr       */
+/*   Updated: 2016/03/30 18:28:36 by qdegraev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,32 @@ void	prompt(int error)
 	ft_strdel(&path);
 }
 
+char	*quotes(char *line)
+{
+	int		i;
+	int		quote;
+
+	i = 0;
+	quote = 0;
+	while (line && line[i])
+	{
+		if (!quote && (line[i] == ' ' || line[i] == '\t'))
+			line[i] = 130;
+		if (!quote && line[i] == '"')
+		{
+			line[i] = 130;
+			quote++;
+		}
+		if (quote && line[i] == '"')
+		{
+			line[i] = 130;
+			quote--;
+		}
+		i++;
+	}
+	return (line);
+}
+
 char	**get_argv(t_builtin *b)
 {
 	char	*line;
@@ -48,14 +74,12 @@ char	**get_argv(t_builtin *b)
 	g = 0;
 	b->error ? prompt(1) : prompt(0);
 	if (get_next_line(0, &line) == 0)
-		exec_exit(b);
-	while (line && line[g])
 	{
-		if (line[g] == '\t')
-			line[g] = ' ';
-		g++;
+		ft_printf("\n");
+		exec_exit(b);
 	}
-	argv = ft_strsplit(line, ' ');
+	line = quotes(line);
+	argv = ft_strsplit(line, 130);
 	if (line)
 		ft_strdel(&line);
 	return (argv);
