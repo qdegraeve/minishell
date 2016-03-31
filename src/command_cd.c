@@ -6,65 +6,49 @@
 /*   By: qdegraev <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/16 15:26:58 by qdegraev          #+#    #+#             */
-/*   Updated: 2016/03/29 20:37:13 by qdegraev         ###   ########.fr       */
+/*   Updated: 2016/03/31 11:22:18 by qdegraev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	cd_oldpwd(t_builtin *b)
+char	*cd_oldpwd(t_builtin *b)
 {
-	int		i;
-	char	*pwd;
-	char	*swap;
+	char	*path;
 
-	i = 0;
-	pwd = NULL;
-	swap = NULL;
-	while (b->env && b->env[i])
+	path = NULL;
+	if ((path = ft_getenv("OLDPWD", b->env)) != NULL)
+		path = ft_strjoin(path, b->argv[0] + 1);
+	else
 	{
-		if (!ft_strncmp(b->env[i], "OLDPWD=", 7))
-		{
-			swap = ft_strdup(b->env[i] + 7);
-			set_env_one(b, ft_strjoin("PWD=", swap), 4);
-			set_env_one(b, ft_cjoin(ft_strdup("OLDPWD="), getcwd(pwd, 255)), 7);
-			chdir(swap);
-			ft_strdel(&swap);
-			return ;
-		}
-		i++;
+		ft_putendl_fd("cd: no OLDPWD defined", 2);
+		b->error = 1;
 	}
-	ft_putstr_fd("cd: no OLDPWD defined", 2);
-	b->error = 1;
-	return ;
+	return (path);
 }
 
 void	cd_home(t_builtin *b, char *path)
 {
-	t_stat		stat;
 	char		*pwd;
 
 	pwd = NULL;
-	if (lstat(path = ft_cjoin(path, ft_strdup("/")), &stat) != 0)
+	pwd = getcwd(pwd, 255);
+	if (path)
 	{
-		b->error = 1;
-		ft_strdel(&path);
-		return ;
-	}
-	if (!S_ISDIR(stat.st_mode))
-	{
-		ft_putstr_fd("cd: not a directory: ", 2);
-		ft_putendl_fd(b->argv[0], 2);
-		ft_strdel(&path);
-		b->error = 1;
-		return ;
-	}
-	else
-	{
-		set_env_one(b, ft_cjoin(ft_strdup("OLDPWD="), getcwd(pwd, 255)), 7);
-		chdir(path);
-		ft_strdel(&path);
-		set_env_one(b, ft_cjoin(ft_strdup("PWD="), getcwd(path, 255)), 4);
+		if (chdir(path) == 0)
+		{
+			set_env_one(b, ft_cjoin(ft_strdup("OLDPWD="), pwd), 7);
+			set_env_one(b, ft_cjoin(ft_strdup("PWD="), getcwd(path, 255)), 4);
+		}
+		else
+		{
+			ft_putstr_fd("cd: not a directory: ", 2);
+			ft_putendl_fd(path, 2);
+			ft_strdel(&pwd);
+			ft_strdel(&path);
+			b->error = 1;
+			return ;
+		}
 	}
 }
 
@@ -84,11 +68,8 @@ void	cd_path(t_builtin *b)
 	}
 	else if (b->argv[0][0] == '/')
 		path = ft_strdup(b->argv[0]);
-	else if (b->argv[0][0] == '-' && !b->argv[0][1])
-	{
-		cd_oldpwd(b);
-		return ;
-	}
+	else if (b->argv[0][0] == '-')
+		path = cd_oldpwd(b);
 	else
 	{
 		path = ft_cjoin(getcwd(pwd, 255), ft_strdup("/"));

@@ -6,7 +6,7 @@
 /*   By: qdegraev <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/12/18 14:25:24 by qdegraev          #+#    #+#             */
-/*   Updated: 2016/03/30 13:16:35 by qdegraev         ###   ########.fr       */
+/*   Updated: 2016/03/31 11:48:00 by qdegraev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,8 @@ int		get_next_line(int const fd, char **line)
 	buf[ret] = '\0';
 	tmp[fd] = new_join(tmp[fd], buf);
 	k = check_linefeed(tmp[fd]);
-	if (ret == 0 && !tmp[fd][0])
+	(ret == 0 && !tmp[fd][0]) ? ft_strdel(&tmp[fd]) : 0;
+	if (ret == 0 && !tmp[fd])
 		return (0);
 	if (k >= 0 || (k == -1 && ret < BUF_SIZE))
 	{

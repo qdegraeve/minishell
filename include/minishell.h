@@ -6,7 +6,7 @@
 /*   By: qdegraev <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/15 10:34:40 by qdegraev          #+#    #+#             */
-/*   Updated: 2016/03/30 18:04:22 by qdegraev         ###   ########.fr       */
+/*   Updated: 2016/03/31 11:02:00 by qdegraev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ void			exec_cd(t_builtin *b);
 void			cd_no_home(t_builtin *b);
 void			cd_path(t_builtin *b);
 void			cd_home(t_builtin *b, char *path);
-void			cd_oldpwd(t_builtin *b);
+char			*cd_oldpwd(t_builtin *b);
 
 /*
 **		env

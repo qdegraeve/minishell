@@ -6,7 +6,7 @@
 /*   By: qdegraev <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/15 10:41:00 by qdegraev          #+#    #+#             */
-/*   Updated: 2016/03/30 20:04:52 by qdegraev         ###   ########.fr       */
+/*   Updated: 2016/03/31 11:49:19 by qdegraev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,6 @@ void	loop_fork(t_builtin b)
 
 	b.env_cpy = NULL;
 	b.error = 0;
-	
 	while (42)
 	{
 		init_builtin(&b);

@@ -6,7 +6,7 @@
 /*   By: qdegraev <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/15 17:39:03 by qdegraev          #+#    #+#             */
-/*   Updated: 2016/03/30 16:37:19 by qdegraev         ###   ########.fr       */
+/*   Updated: 2016/03/31 11:29:17 by qdegraev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,12 @@ void	get_env_index(t_builtin **b)
 void	exec_exit(t_builtin *b)
 {
 	b->error = 0;
+	if (b->env_cpy)
+		clear_tab(b->env_cpy);
+	if (b->env)
+		clear_tab(b->env);
+	if (b->path)
+		ft_strdel(&b->path);
 	exit(EXIT_SUCCESS);
 }
 
