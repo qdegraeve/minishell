@@ -6,7 +6,7 @@
 /*   By: qdegraev <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/15 10:34:40 by qdegraev          #+#    #+#             */
-/*   Updated: 2016/03/31 11:02:00 by qdegraev         ###   ########.fr       */
+/*   Updated: 2016/03/31 14:47:16 by qdegraev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ typedef struct	s_builtin
 {
 	char		**env;
 	char		**env_cpy;
+	char		**commands;
 	char		**argv;
 	char		*path;
 	int			path_e;
@@ -51,15 +52,21 @@ typedef struct stat	t_stat;
 */
 void			loop_fork(t_builtin b);
 void			sig_handler(int sig);
-void			init_builtin(t_builtin *b);
+void			init_builtin(t_builtin *b, char *command);
 
 /*
 **		prompt
 */
 char			*get_pwd_prompt(char *path);
 void			prompt(int error);
-char			**get_argv(t_builtin *b);
+char			**get_commands(t_builtin *b);
+char			**get_argv(t_builtin *b, char *command);
 char			*quotes(char *line);
+
+/*
+**		do_fork
+*/
+void			do_fork(t_builtin *b);
 
 /*
 **		get_env

@@ -6,13 +6,13 @@
 /*   By: qdegraev <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/15 10:41:00 by qdegraev          #+#    #+#             */
-/*   Updated: 2016/03/31 11:49:19 by qdegraev         ###   ########.fr       */
+/*   Updated: 2016/03/31 14:46:19 by qdegraev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	init_builtin(t_builtin *b)
+void	init_builtin(t_builtin *b, char *command)
 {
 	if (b->env_cpy)
 	{
@@ -30,8 +30,8 @@ void	init_builtin(t_builtin *b)
 	b->env_v = 0;
 	b->path_e = -1;
 	b->home = -1;
-	b->argv = get_argv(b);
 	b->error = 0;
+	b->argv = get_argv(b, command);
 }
 
 void	sig_handler(int sig)
@@ -45,28 +45,26 @@ void	sig_handler(int sig)
 
 void	loop_fork(t_builtin b)
 {
-	pid_t	parent;
+	int		i;
 
+	i = 0;
 	b.env_cpy = NULL;
 	b.error = 0;
 	while (42)
 	{
-		init_builtin(&b);
-		if (b.argv[0])
-			get_command(b.argv[0], &b);
-		if (b.path)
+		i = 0;
+		b.commands = get_commands(&b);
+		while (b.commands && b.commands[i])
 		{
-			parent = fork();
-			if (parent > 0)
-				wait(NULL);
-			else if (parent == -1)
-				exit(EXIT_FAILURE);
-			else if (parent == 0)
-			{
-				if (execve(b.path, b.argv, b.env) == -1)
-					b.error = 1;
-			}
+			init_builtin(&b, b.commands[i]);
+			if (b.argv[0])
+				get_command(b.argv[0], &b);
+			if (b.path)
+				do_fork(&b);
+			i++;
 		}
+		if (b.commands)
+			clear_tab(b.commands);
 	}
 }
 

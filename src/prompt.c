@@ -6,7 +6,7 @@
 /*   By: qdegraev <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/25 16:47:58 by qdegraev          #+#    #+#             */
-/*   Updated: 2016/03/31 11:38:08 by qdegraev         ###   ########.fr       */
+/*   Updated: 2016/03/31 14:38:47 by qdegraev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,14 +63,14 @@ char	*quotes(char *line)
 	return (line);
 }
 
-char	**get_argv(t_builtin *b)
+char	**get_commands(t_builtin *b)
 {
 	char	*line;
-	char	**argv;
+	char	**commands;
 	int		g;
 
 	line = NULL;
-	argv = NULL;
+	commands = NULL;
 	g = 0;
 	b->error ? prompt(1) : prompt(0);
 	if (get_next_line(0, &line) == 0)
@@ -78,9 +78,19 @@ char	**get_argv(t_builtin *b)
 		ft_printf("\n");
 		exec_exit(b);
 	}
-	line = quotes(line);
-	argv = ft_strsplit(line, 130);
+	commands = ft_strsplit(line, ';');
 	if (line)
 		ft_strdel(&line);
+	return (commands);
+}
+
+char	**get_argv(t_builtin *b, char *command)
+{
+	char	**argv;
+
+	argv = NULL;
+	b->error = 0;
+	command = quotes(command);
+	argv = ft_strsplit(command, 130);
 	return (argv);
 }

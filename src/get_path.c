@@ -6,7 +6,7 @@
 /*   By: qdegraev <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/15 17:39:03 by qdegraev          #+#    #+#             */
-/*   Updated: 2016/03/31 11:29:17 by qdegraev         ###   ########.fr       */
+/*   Updated: 2016/03/31 22:16:58 by qdegraev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,8 @@ void	exec_exit(t_builtin *b)
 		clear_tab(b->env);
 	if (b->path)
 		ft_strdel(&b->path);
+	if (b->argv)
+		clear_tab(b->argv);
 	exit(EXIT_SUCCESS);
 }
 
