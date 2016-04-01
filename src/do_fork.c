@@ -6,7 +6,7 @@
 /*   By: qdegraev <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/31 14:40:56 by qdegraev          #+#    #+#             */
-/*   Updated: 2016/03/31 14:43:35 by qdegraev         ###   ########.fr       */
+/*   Updated: 2016/04/01 15:18:54 by qdegraev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,5 +25,7 @@ void	do_fork(t_builtin *b)
 	{
 		if (execve(b->path, b->argv, b->env) == -1)
 			b->error = 1;
+		b->error = 1;
+		exit(EXIT_FAILURE);
 	}
 }
